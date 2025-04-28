@@ -27,5 +27,9 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
             .HasConversion<string>()
             .HasMaxLength(20);
 
+        builder.HasData(
+            new User { Id= new Guid("41e3de69-4265-43c6-a2d1-9657979160d2"), Password="$2a$11$kYfspCSu4jJk55A/NynhtOahhlgPwki3SSlyusVQTjqZ.rLYbIrg.",  Username = "developer", Phone = "1111111111", Email = "developer@mail.com", Role = Domain.Enums.UserRole.Admin , Status = Domain.Enums.UserStatus.Active, CreatedAt = DateTime.UtcNow}
+        );
+
     }
 }
