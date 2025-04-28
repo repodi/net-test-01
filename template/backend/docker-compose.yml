@@ -1,4 +1,8 @@
-version: '3.8'
+version: '1.0'
+
+networks:
+  ambev.developerevaluation.network: # Define a personalized network between containers
+    driver: bridge
 
 services:
   ambev.developerevaluation.webapi:
@@ -7,44 +11,54 @@ services:
     build:
       context: .
       dockerfile: src/Ambev.DeveloperEvaluation.WebApi/Dockerfile
+    networks:
+      - "ambev.developerevaluation.network"
     environment:
-      - ASPNETCORE_ENVIRONMENT=Development
-      - ASPNETCORE_HTTP_PORTS=8080
-      - ASPNETCORE_HTTPS_PORTS=8081
+      - ASPNETCORE_ENVIRONMENT=Development # Maintain a detailed error messages for development proccess
+      - ConnectionStrings__DefaultConnection=Server=ambev.developerevaluation.database;Port=5432;Database=developer_evaluation;User Id=developer;Password=ev@luAt10n;TrustServerCertificate=True; # connect at local port between webapi and database
     ports:
-      - "8080"
-      - "8081"
-    volumes:
-      - ${APPDATA}/Microsoft/UserSecrets:/home/app/.microsoft/usersecrets:ro
-      - ${APPDATA}/ASP.NET/Https:/home/app/.aspnet/https:ro
-
+      - "32770:8080"
+      - "32771:8081"
+    depends_on:
+      - "ambev.developerevaluation.database"
+      - "ambev.developerevaluation.nosql"
+      - "ambev.developerevaluation.cache"
+    restart: unless-stopped
+  
   ambev.developerevaluation.database:
     container_name: ambev_developer_evaluation_database
     image: postgres:13
-
+    networks:
+      - "ambev.developerevaluation.network"
     environment:
       POSTGRES_DB: developer_evaluation
       POSTGRES_USER: developer
       POSTGRES_PASSWORD: ev@luAt10n
     ports:
-      - "5432"
+      - "32772:5432"
     restart: unless-stopped
 
   ambev.developerevaluation.nosql:
     container_name: ambev_developer_evaluation_nosql 
     image: mongo:8.0    
+    networks:
+      - "ambev.developerevaluation.network"
     environment:
         MONGO_INITDB_ROOT_USERNAME: developer
         MONGO_INITDB_ROOT_PASSWORD: ev@luAt10n
     ports:
-      - "27017"
+      - "32773:27017"
+    restart: unless-stopped
 
   ambev.developerevaluation.cache:
     container_name: ambev_developer_evaluation_cache 
     image: redis:7.4.1-alpine     
     command: redis-server --requirepass ev@luAt10n
+    networks:
+      - "ambev.developerevaluation.network"
     environment:
        MONGO_INITDB_ROOT_USERNAME: developer
        MONGO_INITDB_ROOT_PASSWORD: ev@luAt10n
     ports:
-       - "6379"
+       - "32774:6379"
+    restart: unless-stopped

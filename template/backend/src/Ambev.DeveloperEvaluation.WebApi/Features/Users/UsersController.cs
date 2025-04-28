@@ -8,13 +8,16 @@ using Ambev.DeveloperEvaluation.WebApi.Features.Users.DeleteUser;
 using Ambev.DeveloperEvaluation.Application.Users.CreateUser;
 using Ambev.DeveloperEvaluation.Application.Users.GetUser;
 using Ambev.DeveloperEvaluation.Application.Users.DeleteUser;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Ambev.DeveloperEvaluation.WebApi.Features.Users;
 
 /// <summary>
 /// Controller for managing user operations
 /// </summary>
+[Authorize]
 [ApiController]
+[ProducesResponseType(StatusCodes.Status401Unauthorized)]
 [Route("api/[controller]")]
 public class UsersController : BaseController
 {

@@ -1,84 +1,135 @@
-# Developer Evaluation Project
+# Sales system
 
-`READ CAREFULLY`
+This is a sale system build with net framework 8.0 and angular. 
 
-## Instructions
-**The test below will have up to 7 calendar days to be delivered from the date of receipt of this manual.**
 
-- The code must be versioned in a public Github repository and a link must be sent for evaluation once completed
-- Upload this template to your repository and start working from it
-- Read the instructions carefully and make sure all requirements are being addressed
-- The repository must provide instructions on how to configure, execute and test the project
-- Documentation and overall organization will also be taken into consideration
+## Installation and Developer environment
 
-## Use Case
-**You are a developer on the DeveloperStore team. Now we need to implement the API prototypes.**
+Aplication needs .net Framework 8.0 to execute, need to install the sdk, is operation system agnostic, can use Linux or Windows. 
+This system was built on Linux Manjaro.
 
-As we work with `DDD`, to reference entities from other domains, we use the `External Identities` pattern with denormalization of entity descriptions.
+### IDE
+For development process is recommend you have an IDE, the recommend is Visual Studio Code. 
 
-Therefore, you will write an API (complete CRUD) that handles sales records. The API needs to be able to inform:
+[Visual Studio Code.](https://code.visualstudio.com/)
 
-* Sale number
-* Date when the sale was made
-* Customer
-* Total sale amount
-* Branch where the sale was made
-* Products
-* Quantities
-* Unit prices
-* Discounts
-* Total amount for each item
-* Cancelled/Not Cancelled
+Reccomended extensions: 
+ - For c# language: C#, C# Dev Kit, .Net Install tool 
 
-It's not mandatory, but it would be a differential to build code for publishing events of:
-* SaleCreated
-* SaleModified
-* SaleCancelled
-* ItemCancelled
+### SDK backend
 
-If you write the code, **it's not required** to actually publish to any Message Broker. You can log a message in the application log or however you find most convenient.
+Install .net framework 8.0, install the SDK version.
 
-### Business Rules
+[.Net Framework 8.0 ](https://dotnet.microsoft.com/pt-br/download/dotnet/8.0)
 
-* Purchases above 4 identical items have a 10% discount
-* Purchases between 10 and 20 identical items have a 20% discount
-* It's not possible to sell above 20 identical items
-* Purchases below 4 items cannot have a discount
 
-These business rules define quantity-based discounting tiers and limitations:
+### Docker and docker compose (Not mandatory)
 
-1. Discount Tiers:
-   - 4+ items: 10% discount
-   - 10-20 items: 20% discount
+Install docker and docker compose tool.
+On linux don't need the desktop client, just the docker engine. 
 
-2. Restrictions:
-   - Maximum limit: 20 items per product
-   - No discounts allowed for quantities below 4 items
+[Docker and docker composer tool ](https://docs.docker.com/desktop/)
 
-## Overview
-This section provides a high-level overview of the project and the various skills and competencies it aims to assess for developer candidates. 
+**Note:** This step is not mandatory but if docker is not installed, have to install the database manually and config port and connection string on appsettings in the project. 
 
-See [Overview](/.doc/overview.md)
+### Instalation steps
+
+The steps before has to be done before instalation steps.
+
+
+**Clone repository:**
+
+```
+git clone https://github.com/repodi/net-test-01.git
+```
+
+Navigate to base folder, inside the cloned folder:
+
+```
+cd template/backend
+```
+
+**Build the project:** 
+
+Try build the project using dotnet. 
+
+Restore libraries
+```
+dotnet restore "./src/Ambev.DeveloperEvaluation.WebApi/Ambev.DeveloperEvaluation.WebApi.csproj"
+```
+
+Build
+```
+dotnet build "./src/Ambev.DeveloperEvaluation.WebApi/Ambev.DeveloperEvaluation.WebApi.csproj"
+```
+
+**Up Database:**
+
+For up database (Postgre), the best way is use docker compose to up containers. 
+
+Navigate to base folder, inside the cloned folder:
+
+```
+cd template/backend
+```
+
+Execute compose
+
+```bash
+docker compose up
+```
+
+Validar se os containers forem instalados com sucesso e estão 
+executando:
+
+Comando
+```bash
+docker ps --format "table {{.ID}}\t{{.Names}}\t{{.Status}}"
+```
+
+ou 
+```bash
+docker container list
+```
+
+Result
+
+```
+CONTAINER ID   NAMES                                 STATUS
+076ca49bceda   ambev_developer_evaluation_webapi     Up 8 minutes
+5b1e4e48055d   ambev_developer_evaluation_database   Up 8 minutes
+a873c42af8c9   ambev_developer_evaluation_cache      Up 8 minutes
+bffc89fad8c7   ambev_developer_evaluation_nosql      Up 8 minutes
+``` 
+
+See [Containers](/.doc/tech-stack.md)
+
+
+If the steps have been successfully completed, the next step is create structure and load data to database.
+In this point run application will work, the api has connected but fails to write and read from database. 
+
+**Create tables from database:**
+
+To create tables from database is needed to execute entity framework migrations. 
+
+If containers are running database are listening on port 32772, this port is exposed externally by docker, then can be reached on local machine. 
+
+Navigate to base folder webapi, inside the cloned folder:
+
+```
+cd template/backend/src/Ambev.DeveloperEvaluation.WebApi
+```
+
+Execute migrations to update the database and create tables, and seed data:
+
+```
+dotnet ef database update
+```
 
 ## Tech Stack
 This section lists the key technologies used in the project, including the backend, testing, frontend, and database components. 
 
 See [Tech Stack](/.doc/tech-stack.md)
-
-## Frameworks
-This section outlines the frameworks and libraries that are leveraged in the project to enhance development productivity and maintainability. 
-
-See [Frameworks](/.doc/frameworks.md)
-
-<!-- 
-## API Structure
-This section includes links to the detailed documentation for the different API resources:
-- [API General](./docs/general-api.md)
-- [Products API](/.doc/products-api.md)
-- [Carts API](/.doc/carts-api.md)
-- [Users API](/.doc/users-api.md)
-- [Auth API](/.doc/auth-api.md)
--->
 
 ## Project Structure
 This section describes the overall structure and organization of the project files and directories. 
