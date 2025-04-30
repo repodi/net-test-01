@@ -1,6 +1,39 @@
 # Sales system
 
-This is a sale system build with net framework 8.0 and angular. 
+This is a sale system build with net framework 8.0 and angular.
+
+A customer places a purchase order. He can open the order himself or he can call a branch and ask them to open a purchase order for him.
+
+When the customer opens the purchase order himself he can enter the branch salesperson code, this code identifies the branch salesperson user.
+
+The branch is responsible for closing the order and transforming the purchase order into a sale.
+
+The branch can also open purchase orders and then close the sale for customers.
+
+There are 4 different types of users who access the system (profile):
+
+- Customer: represents a customer who can make sales purchase order , can create user with customer role (fixed cusomer id)
+
+- Branch: represents a branch employee who can complete sales and list sales by branch (only directed to this branch), can create user with customer role
+
+- Manager: represents an enterprise employee who can complete sales and list sales by branch or not, can create user with customer or branch roles 
+
+- Admin: represents a enterprise employee with priviligied access can alter discounts and create new users
+
+
+## Details about the flow 
+
+The sequence diagram and the entity relationship diagram of the database showing how the system works can be found at:
+
+See [Flow](/.doc/flow.md)
+
+## Sample data
+
+As a demonstration system, when running the entity framework, it creates an initial load in the tables so that it can be used.
+
+Users are also created for each profile, the relationship can be found at:
+
+See [Users Profile](/.doc/users.md)
 
 
 ## Installation and Developer environment
@@ -79,15 +112,14 @@ Execute compose
 docker compose up
 ```
 
-Validar se os containers forem instalados com sucesso e estão 
-executando:
+Validate if the containers are successfully installed and are running:
 
-Comando
+Command
 ```bash
 docker ps --format "table {{.ID}}\t{{.Names}}\t{{.Status}}"
 ```
 
-ou 
+or
 ```bash
 docker container list
 ```
