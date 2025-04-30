@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations.Schema;
 using Ambev.DeveloperEvaluation.Common.Security;
 using Ambev.DeveloperEvaluation.Common.Validation;
 using Ambev.DeveloperEvaluation.Domain.Common;
@@ -60,6 +61,11 @@ public class User : BaseEntity, IUser
     /// </summary>
     public DateTime? UpdatedAt { get; set; }
 
+    public Guid? BranchId { get; set; }
+
+    public Guid? CustomerId { get; set; }
+    public string SellerCode { get; set; } = string.Empty;
+
     /// <summary>
     /// Gets the unique identifier of the user.
     /// </summary>
@@ -78,6 +84,7 @@ public class User : BaseEntity, IUser
     /// <returns>The user's role as a string.</returns>
     string IUser.Role => Role.ToString();
 
+        
     /// <summary>
     /// Initializes a new instance of the User class.
     /// </summary>
