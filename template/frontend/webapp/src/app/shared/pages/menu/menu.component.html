@@ -1,0 +1,42 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark" *ngIf="authenticatedUser">
+    <div class="container-fluid">
+      <a class="navbar-brand" routerLink="/">Sales System</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav me-auto">
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/dashboard" routerLinkActive="active">Dashboard</a>
+          </li> 
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/admin" routerLinkActive="active">Admin</a>
+          </li> 
+          <!-- <li class="nav-item" *ngIf="isInRole([roleEnum[roleEnum.Admin]])">
+            <a class="nav-link" routerLink="/admin" routerLinkActive="active">Admin Panel</a>
+          </li> -->
+        </ul>
+        <!-- <span class="navbar-text me-3 text-white">
+          Profile: {{ role }}  
+        </span> -->
+        <div class="ml-auto">
+          <button class="btn btn-outline-light btn-sm mx-2" (click)="toggleProfile()">
+            <i class="material-icons md-18">person</i>{{ profile.name }}
+          </button>
+        </div>
+        <button class="btn btn-outline-light btn-sm" (click)="logout()">
+          <i class="material-icons md-18">logout</i>{{ profile.email }}
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Expandable Profile Section -->
+<div class="container mt-2" *ngIf="authenticatedUser && showProfile">
+  <div class="card">
+    <div class="card-body">
+      <h5 class="card-title">Profile Info</h5>
+      <p class="card-text">Email: {{ profile.email }}</p>      
+    </div>
+  </div>
+</div>

@@ -22,6 +22,7 @@ public class Program
             Log.Information("Starting web application");
 
             WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
+
             builder.AddDefaultLogging();
 
             builder.Services.AddControllers();
@@ -81,9 +82,29 @@ public class Program
 
             builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
 
+            builder.Services.AddCors(options =>
+            {
+                    // aplly a better cors policy
+                    // options.AddPolicy("AllowAngularApp",
+                    //     policy => policy.WithOrigins("http://localhost:4200")
+                    //         .AllowAnyMethod()
+                    //         .AllowAnyHeader());
+
+                    options.AddPolicy("AllowAllApp",
+                        policy => policy
+                            .AllowAnyOrigin()
+                            .AllowAnyMethod()
+                            .AllowAnyHeader());
+            });
+
             var app = builder.Build();
             app.UseMiddleware<ValidationExceptionMiddleware>();
 
+
+            //app.UseCors("AllowAngularApp");
+
+            app.UseCors("AllowAllApp");
+            
             //if (app.Environment.IsDevelopment())
             //{
                 app.UseSwagger();
