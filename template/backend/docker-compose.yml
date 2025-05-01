@@ -1,4 +1,4 @@
-version: '1.0'
+version: '1.2'
 
 networks:
   ambev.developerevaluation.network: # Define a personalized network between containers
