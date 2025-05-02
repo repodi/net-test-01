@@ -3,6 +3,7 @@ version: '1.2'
 networks:
   ambev.developerevaluation.network: # Define a personalized network between containers
     driver: bridge
+    name: ambev.developerevaluation.network
 
 services:
   ambev.developerevaluation.webapi:
@@ -61,4 +62,19 @@ services:
        MONGO_INITDB_ROOT_PASSWORD: ev@luAt10n
     ports:
        - "32774:6379"
+    restart: unless-stopped
+
+  # comment if dont want up the frontend container
+  ambev.developerevaluation.frontend:
+    container_name: ambev_developer_evaluation_frontend
+    image: ${DOCKER_REGISTRY-}ambevdeveloperevaluationfrontend
+    build:
+      context: ../frontend 
+      dockerfile: Dockerfile
+    networks:
+      - "ambev.developerevaluation.network"
+    ports:
+      - "32780:80"
+    depends_on:
+      - "ambev.developerevaluation.webapi"
     restart: unless-stopped
